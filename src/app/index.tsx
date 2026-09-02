@@ -1,4 +1,12 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import {
+  Button,
+  FlatList,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
@@ -6,27 +14,31 @@ export default function Index() {
     { id: 1, title: "task1", desc: "desc" },
     { id: 2, title: "task2", desc: "desc2" },
   ];
-  // const [todos, setTodos] = useState(listTasks);
+  const [title, setTitle] = useState("task");
+  const [desc, setDesc] = useState("desc");
+  const [todos, setTodos] = useState(listTasks);
 
-  // function addTodo() {
-  //   const newTodo = {
-  //     id: todos.length + 1,
-  //     title: `title ${todos.length + 1}`,
-  //     desc: `desc ${todos.length + 1}`,
-  //   };
-  //   let arr = todos;
-  //   arr.push(newTodo);
-  // }
+  function addTodo() {
+    const newTodo = {
+      id: Date.now(),
+      title: title,
+      desc: desc,
+    };
+
+    setTodos([...todos, newTodo]);
+  }
 
   type Props = {
     title: string;
+    desc: string;
   };
 
-  const Item = ({ title }: Props) => {
+  const Item = ({ title, desc }: Props) => {
     return (
       <>
-        <View>
+        <View style={styles.listItem}>
           <Text>{title}</Text>
+          <Text>{desc}</Text>
         </View>
       </>
     );
@@ -36,13 +48,27 @@ export default function Index() {
     <>
       <SafeAreaProvider>
         <SafeAreaView>
+          <View style={styles.buttonView}>
+            <TextInput
+              style={styles.input}
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+            />
+            <TextInput
+              style={styles.input}
+              value={desc}
+              onChange={(event) => setDesc(event.target.value)}
+            />
+            <Button title="add" onPress={addTodo} />
+          </View>
           <FlatList
-            data={listTasks}
-            renderItem={({ item }) => <Item title={item.title} />}
+            style={styles.list}
+            data={todos}
+            renderItem={({ item }) => (
+              <Item title={item.title} desc={item.desc} />
+            )}
             keyExtractor={(item) => item.id}
-          >
-            <Text>нет задач</Text>
-          </FlatList>
+          />
         </SafeAreaView>
       </SafeAreaProvider>
     </>
@@ -50,9 +76,23 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+  list: {
+    padding: 10,
+  },
+  listItem: {
+    padding: 10,
+    marginBottom: 5,
+    backgroundColor: "#cbc9c9",
+  },
+  input: {
+    padding: 10,
+    marginBottom: 10,
+    borderWidth: 1,
+  },
+  buttonView: {
+    paddingTop: 50,
+    width: "50%",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
 });
