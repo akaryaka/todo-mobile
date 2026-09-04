@@ -25,9 +25,9 @@ export default function Index() {
       desc: desc,
     };
 
-    setTodos([...todos, newTodo]);
-
-    alert(title);
+    if (title.trim() && desc.trim()) {
+      setTodos([...todos, newTodo]);
+    }
   }
 
   type Props = {
