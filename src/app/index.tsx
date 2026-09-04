@@ -26,6 +26,8 @@ export default function Index() {
     };
 
     setTodos([...todos, newTodo]);
+
+    alert(title);
   }
 
   type Props = {
@@ -52,12 +54,12 @@ export default function Index() {
             <TextInput
               style={styles.input}
               value={title}
-              onChange={(event) => setTitle(event.target.value)}
+              onChangeText={setTitle}
             />
             <TextInput
               style={styles.input}
               value={desc}
-              onChange={(event) => setDesc(event.target.value)}
+              onChangeText={setDesc}
             />
             <Button title="add" onPress={addTodo} />
           </View>
